@@ -1,6 +1,17 @@
-import { h } from "/js/src/index.js";
+import { h } from '/js/src/index.js';
 
-const rowHeader = header => [h("th", header)];
-const rowData = data => [h("td", data)];
+/**
+ * Table row header
+ * @param {string} header
+ * @return {vnode}
+ */
+const rowHeader = header => [h('th', header)];
+
+/**
+ * Table data row
+ * @param {object} data
+ * @return {vnode}
+ */
+const rowData = data => [h('td', data)];
 
 export { rowHeader, rowData };
