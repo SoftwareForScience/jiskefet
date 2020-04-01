@@ -6,6 +6,8 @@ on:
       - 'backend/**'
       - 'spec/**'
   push:
+    branches:
+      - master
     paths:
       - 'backend/**'
       - 'spec/**'

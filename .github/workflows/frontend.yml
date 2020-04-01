@@ -5,6 +5,8 @@ on:
     paths:
       - 'frontend/**'
   push:
+    branches:
+      - master
     paths:
       - 'frontend/**'
 
