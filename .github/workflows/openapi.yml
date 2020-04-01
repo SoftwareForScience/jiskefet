@@ -2,13 +2,7 @@ name: OpenAPI
 
 on:
   pull_request:
-    paths:
-      - 'spec/**'
   push:
-    branches:
-      - master
-    paths:
-      - 'spec/**'
 
 jobs:
   validate:
