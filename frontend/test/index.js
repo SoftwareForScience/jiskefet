@@ -20,22 +20,29 @@
 
 const assert = require('assert')
 const puppeteer = require('puppeteer')
+const path = require('path');
+const { HttpServer } = require('@aliceo2/web-ui');
 
-describe('Frontend', function() {
-    before(async function() {
+describe('Frontend', () => {
+    before(() => {
+      http = new HttpServer({ port: 3000 });
+      http.addStaticPath(path.resolve(__dirname, '../lib/public'));
+    })
+
+    before(async () => {
       browser = await puppeteer.launch()
       page = await browser.newPage()
     })
 
-    it('loads the page successfully', async function() {
+    it('loads the page successfully', async () => {
       const response = await page.goto('http://localhost:3000')
       assert.equal(response.status(), 200)
       const title = await page.title()
       assert.equal(title, 'AliceO2 Logbook 2020')
     })
 
-    describe('Overview', function() {
-      it('can filter logs dynamically', async function() {
+    describe('Overview', () => {
+      it('can filter logs dynamically', async () => {
         const checkbox = await page.$('.form-check input')
         const label = await page.$('.form-check label div')
 
@@ -48,5 +55,9 @@ describe('Frontend', function() {
         const newTableRows = await page.$$('table tr')
         assert.equal(true, newTableRows.length - 1 === parseInt(amount.substring(1, amount.length - 1)))
       })
+    })
+
+    after(() => {
+      http.getServer.close()
     })
 })
