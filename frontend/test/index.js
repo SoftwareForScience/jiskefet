@@ -49,9 +49,9 @@ describe('Frontend', () => {
         const id = await page.evaluate(element => element.id, checkbox)
         const amount = await page.evaluate(element => element.innerText, label)
         assert.equal(id, 'filtersCheckbox1')
-
+        
         await page.click(`#${id}`)
-        await page.waitForSelector('table')
+        await page.waitFor(500)
         const newTableRows = await page.$$('table tr')
         assert.equal(true, newTableRows.length - 1 === parseInt(amount.substring(1, amount.length - 1)))
       })
