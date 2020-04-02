@@ -23,9 +23,11 @@ const puppeteer = require('puppeteer')
 const path = require('path');
 const { HttpServer } = require('@aliceo2/web-ui');
 
+const PORT = 3001
+
 describe('Frontend', () => {
     before(() => {
-      http = new HttpServer({ port: 3000 });
+      http = new HttpServer({ port: PORT });
       http.addStaticPath(path.resolve(__dirname, '../lib/public'));
     })
 
@@ -35,7 +37,7 @@ describe('Frontend', () => {
     })
 
     it('loads the page successfully', async () => {
-      const response = await page.goto('http://localhost:3000')
+      const response = await page.goto(`http://localhost:${PORT}`)
       assert.equal(response.status(), 200)
       const title = await page.title()
       assert.equal(title, 'AliceO2 Logbook 2020')
@@ -49,7 +51,7 @@ describe('Frontend', () => {
         const id = await page.evaluate(element => element.id, checkbox)
         const amount = await page.evaluate(element => element.innerText, label)
         assert.equal(id, 'filtersCheckbox1')
-        
+
         await page.click(`#${id}`)
         await page.waitFor(500)
         const newTableRows = await page.$$('table tr')
