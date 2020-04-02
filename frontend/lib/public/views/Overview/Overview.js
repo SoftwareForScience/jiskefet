@@ -104,6 +104,7 @@ export default class Overview extends Observable {
 
     this.notify();
   }
+
   /**
    * Filter data by tags if applicable
    */
