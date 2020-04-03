@@ -54,19 +54,17 @@ export default class Overview extends Observable {
             this.data = RemoteData.failure(result);
         } else {
             this.data = RemoteData.success(result);
-            this.filtered = [...result];
-        }
 
-        const subentries = this.filtered.map(entry => {
-            const filter = Object.keys(entry).map(subkey => {
-                if (subkey !== 'tags') {
-                    return entry[subkey];
-                }
+            this.filtered = this.data.payload.map(entry => {
+                const filter = Object.keys(entry).map(subkey => {
+                    if (subkey !== 'tags') {
+                        return entry[subkey];
+                    }
+                });
+                return filter;
             });
-
-            return filter;
-        });
-        return subentries;
+        }
+        this.notify()
     }
 
     /**
@@ -93,26 +91,23 @@ export default class Overview extends Observable {
     getFilteredData() {
         this.filterCriteria.length !== 0
             ? this.filterByTags()
-            : (this.filtered = [...this.data]);
-
-        // this.notify();
+            : (this.filtered = [...this.data.payload]);
     }
 
     /**
      * Filter data by tags if applicable
      */
     filterByTags() {
-        this.filtered = this.data
+        this.filtered = this.data.payload
             .map(entry => {
                 let match = this.checkExistingTag(entry);
-
                 if (match) {
-                    return entry;
+                     return entry; 
                 }
-
                 return null;
             })
             .filter(entry => entry !== null);
+        this.notify()
     }
 
     /**
@@ -137,13 +132,15 @@ export default class Overview extends Observable {
      * @return {object}
      */
     getTagCounts() {
-        if (Array.isArray(this.data)) {
-            return this.data.reduce((accumulator, currentValue) => {
+        if (this.data.kind === 'Success') {
+            return this.data.payload.reduce((accumulator, currentValue) => {
                 currentValue.tags.forEach(tag => {
                     accumulator[tag] = (accumulator[tag] || 0) + 1;
                 });
                 return accumulator;
             }, {});
+        } else {
+            return []
         }
     }
 }

@@ -30,23 +30,24 @@ http.close = () => http.getServer.close();
 http.addStaticPath(path.resolve(__dirname, 'public'));
 
 http.get('/logs/all', (_request, response, _next) => {
+    const date = new Date().toDateString()
     const data = [
         {
             authorID: 'Batman',
             title: 'Run1',
-            creationTime: this.date,
+            creationTime: date,
             tags: ['Tag1', 'Tag2'],
         },
         {
             authorID: 'Joker',
             title: 'Run2',
-            creationTime: this.date,
+            creationTime: date,
             tags: ['Tag2'],
         },
         {
             authorID: 'Anonymous',
             title: 'Run5',
-            creationTime: this.date,
+            creationTime: date,
             tags: ['Tag3'],
         },
     ];

@@ -28,7 +28,6 @@ export default model => [overviewScreen(model)];
  */
 const overviewScreen = model => {
     const headers = model.overview.getHeaders();
-    const data = model.overview.getTableData();
     const tags = model.overview.getTagCounts();
 
     return h('.w-75.flex-row', [
@@ -39,14 +38,19 @@ const overviewScreen = model => {
                     return rowHeader(header);
                 }),
             ]),
-            data.map((entry, index) => {
-                return h('tr', [
-                    rowData(index + 1),
-                    Object.keys(entry).map(subItem => {
-                        return rowData(entry[subItem]);
-                    }),
-                ]);
-            }),
-        ]),
+            model.overview.data.match({
+                NotAsked: () => h('', 'Loading...'),
+                Loading: () => h('', 'Loading...'),
+                Failure: error => h('.danger', error),
+                Success: payload => model.overview.filtered.map((entry, index) => {
+                    return h('tr', [
+                        rowData(index + 1),
+                        Object.keys(entry).map(subItem => {
+                            return rowData(entry[subItem]);
+                        }),
+                    ]);
+                })
+            })
+        ])
     ]);
 };
