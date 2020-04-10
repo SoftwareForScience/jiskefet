@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Observable } from '/js/src/index.js';
-import { get } from '../../api/apiWrapper.js';
+import { get } from '../../util/apiWrapper.js';
 
 /**
  * Model representing handlers for homePage.js
@@ -45,6 +45,7 @@ export default class Overview extends Observable {
         const entries = await get('logs');
         this.data = entries;
         this.filtered = [...entries];
+        this.notify()
     }
 
     /**
