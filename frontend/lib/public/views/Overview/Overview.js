@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Observable } from '/js/src/index.js';
+import { get } from '../../api/apiWrapper.js';
 
 /**
  * Model representing handlers for homePage.js
@@ -29,38 +30,21 @@ export default class Overview extends Observable {
     constructor(model) {
         super();
         this.model = model;
-        this.date = new Date().toDateString();
         this.filterCriteria = [];
-        this.data = [
-            {
-                authorID: 'Batman',
-                title: 'Run1',
-                creationTime: this.date,
-                tags: ['Tag1', 'Tag2'],
-            },
-            {
-                authorID: 'Joker',
-                title: 'Run2',
-                creationTime: this.date,
-                tags: ['Tag2'],
-            },
-            {
-                authorID: 'Anonymous',
-                title: 'Run5',
-                creationTime: this.date,
-                tags: ['Tag3'],
-            },
-        ];
-        this.filtered = [...this.data];
+        this.data = [];
+        this.filtered = [];
         this.headers = ['ID', 'Author ID', 'Title', 'Creation Time'];
+
+        this.fetchTableData();
     }
 
     /**
-     * Get the headers from the Overview class
-     * @returns {Array} Returns the headers
+     * Fetch the raw table data
      */
-    getHeaders() {
-        return this.headers;
+    async fetchTableData() {
+        const entries = await get('logs');
+        this.data = entries;
+        this.filtered = [...entries];
     }
 
     /**
@@ -79,6 +63,14 @@ export default class Overview extends Observable {
         });
 
         return subentries;
+    }
+
+    /**
+     * Get the headers from the Overview class
+     * @returns {Array} Returns the headers
+     */
+    getHeaders() {
+        return this.headers;
     }
 
     /**

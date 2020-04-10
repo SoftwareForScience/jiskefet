@@ -33,4 +33,29 @@ http.get('/', (_request, response, _next) => {
     });
 }, { public: true });
 
+http.get('/logs', (_request, response, _next) => {
+    const date = new Date().toDateString();
+    response.status(200).json([
+        {
+            authorID: 'Batman',
+            title: 'Run1',
+            creationTime: date,
+            tags: ['Tag1', 'Tag2'],
+        },
+        {
+            authorID: 'Joker',
+            title: 'Run2',
+            creationTime: date,
+            tags: ['Tag2'],
+        },
+        {
+            authorID: 'Anonymous',
+            title: 'Run5',
+            creationTime: date,
+            tags: ['Tag3'],
+        },
+    ]);
+}, { public: true });
+
+
 module.exports = http;
