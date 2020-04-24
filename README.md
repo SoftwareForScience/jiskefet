@@ -1,5 +1,7 @@
 # jiskefet
 
+This project has been moved to: https://github.com/AliceO2Group/Bookkeeping
+
 This repo contains the software for the 'ALICE Electronic Logbook'. https://alice-logbook.cern.ch/
 
 ## Versioning
